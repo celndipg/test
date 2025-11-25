@@ -1,0 +1,27 @@
+name: Hello World - 1
+on:
+  workflow_dispatch:  # Allows manual and API-triggered runs
+  push:
+    branches:
+      - code  # Run workflow when code is pushed to 'code' branch
+jobs:
+  Hello-World-Job:
+    runs-on:
+#      - codebuild-data-danderson-test-se-${{ github.run_id }}-${{ github.run_attempt }}
+      - codebuild-test-run-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - run: |
+         echo "Hello World!"
+         echo "four"
+         echo "AWS Encvironment Variables:"
+         env | egrep -i "AWS|VPC"
+      - run: echo
+      - run: echo
+      - run: |
+         echo "three"
+         echo "Non-AWS Environment Variables:"
+         env | egrep -iv "AWS|VPC"
+      - run: |
+          echo "Trying get my external IP address..."
+          curl -s --connect-timeout 5 https://icanhazip.com
+      - run: echo "The End!"
